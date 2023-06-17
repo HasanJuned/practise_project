@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
         isLoading = false;
       });
     } else {
-      throw Exception('Failed to fetch posts');
+      throw Exception('Failed to fetch posts, try again');
     }
     setState(() {
       isLoading = false;
@@ -94,7 +94,17 @@ class _HomePageState extends State<HomePage> {
           return Card(
             margin: const EdgeInsets.all(8.0),
             child: ListTile(
-              title: Text(post['title']),
+              title: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Text(post['id'].toString(), style: const TextStyle(fontWeight: FontWeight.w800),),
+                    const SizedBox(width: 20,),
+                    Text(post['title'], style: const TextStyle(fontWeight: FontWeight.bold),),
+                  ],
+                ),
+              ),
+
               subtitle: Text(post['body']),
             ),
           );
