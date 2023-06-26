@@ -17,7 +17,12 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController numberController = TextEditingController();
+  GlobalKey<FormState> formKey =  GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,18 +33,73 @@ class HomePage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 200,
-                width: 200,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.redAccent, width: 8)),
-                child: Text('Container'),
-              )
-            ],
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextFormField(
+                 validator: (String? value){
+                   if(value!.isEmpty ?? true){
+                     return 'enter your name';
+                   } else {
+
+                   }
+                 },
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    fillColor: Colors.grey.shade400,
+                    filled: true,
+
+                    border: OutlineInputBorder()
+                  ),
+
+                ),
+                SizedBox(height: 20,),
+                TextFormField(
+                  validator: (String? value){
+
+
+                    if(value?.isEmpty?? true){
+                      return 'enter password mandatory';
+
+                    } else {
+                      return null;
+                    }
+
+                  },
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    hintText: 'password',
+                    fillColor: Colors.grey.shade400,
+                    filled: true,
+
+                    border: OutlineInputBorder()
+                  ),
+
+                ),
+                SizedBox(height: 20,),
+                TextFormField(
+                  controller: numberController,
+                  decoration: InputDecoration(
+                    hintText: 'certificate',
+                    fillColor: Colors.grey.shade400,
+                    filled: true,
+
+                    border: OutlineInputBorder()
+                  ),
+
+                ),
+
+                ElevatedButton(onPressed: (){
+                  if (formKey.currentState!.validate()) {
+                    print('next screen or validation success');
+                  }
+                }, child: Text('Next'))
+
+              ],
+            ),
           ),
         ),
       ),
