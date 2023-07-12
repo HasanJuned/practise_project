@@ -21,34 +21,130 @@ class _HomeScreenState extends State<HomeScreen> {
   int? maxTemp;
   int? minTemp;
   bool inProgress = false;
+  Icon? icons;
 
   descriptionModel() {
     if ((temp4?.toDouble() ?? 0) <= -20.toDouble()) {
+      iconsModel();
       return description = 'Too much snowing';
     } else if ((temp4?.toDouble() ?? 0) <= -15.toDouble()) {
+      iconsModel();
       return description = 'Snow';
     } else if ((temp4?.toDouble() ?? 0) <= -10.toDouble()) {
+      iconsModel();
       return description = 'Too much cool';
     } else if ((temp4?.toDouble() ?? 0) <= -5.toDouble()) {
+      iconsModel();
       return description = 'Mostly Cool';
     } else if ((temp4?.toDouble() ?? 0) <= 0.toDouble()) {
+      iconsModel();
       return description = 'Cool';
     } else if ((temp4?.toDouble() ?? 0) <= 5.toDouble()) {
+      iconsModel();
       return description = 'Rain';
     } else if ((temp4?.toDouble() ?? 0) <= 10.toDouble()) {
+      iconsModel();
       return description = 'Weather is cool';
     } else if ((temp4?.toDouble() ?? 0) <= 15.toDouble()) {
+      iconsModel();
       return description = 'Sunny and Cool';
     } else if ((temp4?.toDouble() ?? 0) <= 20.toDouble()) {
+      iconsModel();
       return description = 'Sunny';
     } else if ((temp4?.toDouble() ?? 0) <= 25.toDouble()) {
+      iconsModel();
       return description = 'Mostly Sunny';
     } else if ((temp4?.toDouble() ?? 0) <= 30.toDouble()) {
+      iconsModel();
       return description = 'Hot';
     } else if ((temp4?.toDouble() ?? 0) <= 35.toDouble()) {
+      iconsModel();
       return description = 'Mostly Hot';
     } else if ((temp4?.toDouble() ?? 0) <= 40.toDouble()) {
+      iconsModel();
       return description = 'Too much hot';
+    }
+  }
+
+  iconsModel() {
+    if ((temp4?.toDouble() ?? 0) <= -20.toDouble()) {
+      return icons = const Icon(
+        Icons.snowing,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
+    } else if ((temp4?.toDouble() ?? 0) <= -15.toDouble()) {
+      return icons = const Icon(
+        Icons.snowing,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
+    } else if ((temp4?.toDouble() ?? 0) <= -10.toDouble()) {
+      return icons = const Icon(
+        Icons.sunny_snowing,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
+    } else if ((temp4?.toDouble() ?? 0) <= -5.toDouble()) {
+      return icons = const Icon(
+        Icons.snowing,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
+    } else if ((temp4?.toDouble() ?? 0) <= 0.toDouble()) {
+      return icons = const Icon(
+        Icons.water_drop_outlined,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
+    } else if ((temp4?.toDouble() ?? 0) <= 5.toDouble()) {
+      return icons = const Icon(
+        Icons.wb_cloudy_outlined,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
+    } else if ((temp4?.toDouble() ?? 0) <= 10.toDouble()) {
+      return icons = const Icon(
+        Icons.wb_sunny,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
+    } else if ((temp4?.toDouble() ?? 0) <= 15.toDouble()) {
+      return icons = const Icon(
+        Icons.wb_sunny_outlined,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
+    } else if ((temp4?.toDouble() ?? 0) <= 20.toDouble()) {
+      return icons = const Icon(
+        Icons.sunny,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
+    } else if ((temp4?.toDouble() ?? 0) <= 25.toDouble()) {
+      return icons = const Icon(
+        Icons.cloudy_snowing,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
+    } else if ((temp4?.toDouble() ?? 0) <= 30.toDouble()) {
+      return icons = const Icon(
+        Icons.sunny_snowing,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
+    } else if ((temp4?.toDouble() ?? 0) <= 35.toDouble()) {
+      return icons = const Icon(
+        Icons.sunny,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
+    } else if ((temp4?.toDouble() ?? 0) <= 40.toDouble()) {
+      return icons = const Icon(
+        Icons.sunny,
+        size: 30,
+        color: Colors.yellowAccent,
+      );
     }
   }
 
@@ -57,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
     Response response = await get(
       Uri.parse(
-          'https://api.tomorrow.io/v4/weather/realtime?location=toronto&apikey=traXCJeobg5nWiW56S2LmwdPz2KR3JfW'),
+          'https://api.tomorrow.io/v4/weather/realtime?location=sylhet&apikey=traXCJeobg5nWiW56S2LmwdPz2KR3JfW'),
     );
     print(response.statusCode);
     print(response.body);
@@ -150,11 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   ListTile(
-                    leading: const Icon(
-                      Icons.sunny_snowing,
-                      size: 35,
-                      color: Colors.yellowAccent,
-                    ),
+                    leading: icons,
                     title: Text(
                       temp.toString(),
                       textAlign: TextAlign.center,
