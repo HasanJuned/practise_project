@@ -11,17 +11,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String? time;
   String? temp;
   String? temp3;
   String? description = 'Mostly Sunny';
   double? temp2;
   double? temp4;
   String? location;
+  String? userLocation = 'Russia';
   String? humidity;
   int? maxTemp;
   int? minTemp;
   bool inProgress = false;
   Icon? icons;
+
 
   descriptionModel() {
     if ((temp4?.toDouble() ?? 0) <= -20.toDouble()) {
@@ -153,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
     Response response = await get(
       Uri.parse(
-          'https://api.tomorrow.io/v4/weather/realtime?location=sylhet&apikey=traXCJeobg5nWiW56S2LmwdPz2KR3JfW'),
+          'https://api.tomorrow.io/v4/weather/realtime?location=$userLocation&apikey=traXCJeobg5nWiW56S2LmwdPz2KR3JfW'),
     );
     print(response.statusCode);
     print(response.body);
@@ -173,6 +176,13 @@ class _HomeScreenState extends State<HomeScreen> {
     minTemp = data['data']['values']['temperature'].toInt() - 5;
     humidity = data['data']['values']['humidity'].toString();
     location = data['location']['name'].toString();
+    time = data['data']['time']
+        .toString()
+        .replaceAll(
+      'T',
+      '\n\nTime : ',
+    )
+        .replaceAll(':00Z', '  ');
 
     // print(temp.toString());
     // print(maxTemp.toString());
@@ -213,10 +223,10 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 100,
             ),
             ListTile(
-              title: const Text(
-                'Current Location',
+              title: Text(
+                location.toString(),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -224,11 +234,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               subtitle: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
-                    location.toString(),
+                    time!,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 20,
