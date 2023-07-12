@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int? minTemp;
   bool inProgress = false;
   Icon? icons;
-
+  Text? text;
 
   descriptionModel() {
     if ((temp4?.toDouble() ?? 0) <= -20.toDouble()) {
@@ -179,13 +179,14 @@ class _HomeScreenState extends State<HomeScreen> {
     time = data['data']['time']
         .toString()
         .replaceAll(
-      'T',
-      '\n\nTime : ',
-    )
+          'T',
+          '\n\nTime : ',
+        )
         .replaceAll(':00Z', '  ');
 
-    // print(temp.toString());
-    // print(maxTemp.toString());
+    if(response.statusCode != 200){
+      text = const Text('Failed to load data or check your network connection');
+    }
 
     inProgress = false;
     setState(() {
@@ -216,107 +217,115 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: Center(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 100,
-            ),
-            ListTile(
-              title: Text(
-                location.toString(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              subtitle: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    time!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey.shade300,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 70, right: 70),
+      body: inProgress
+          ? const Center(
+              child: CircularProgressIndicator(),
+            ) : text!=null ? Text(text.toString())
+          : Center(
               child: Column(
                 children: [
+                  const SizedBox(
+                    height: 100,
+                  ),
                   ListTile(
-                    leading: icons,
                     title: Text(
-                      temp.toString(),
+                      location.toString(),
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontSize: 32,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            'max : ${maxTemp.toString()}',
-                            style: TextStyle(
-                                color: Colors.grey.shade100, letterSpacing: 1),
+                    subtitle: Column(
+                      children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          time!,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.grey.shade300,
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            'min : ${minTemp.toString()}',
-                            style: TextStyle(
-                                color: Colors.grey.shade100, letterSpacing: 1),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 40,
                   ),
-                  Text(
-                    'Humidity : ${humidity.toString()}',
-                    style: TextStyle(
-                        color: Colors.white, letterSpacing: 0.8, fontSize: 16),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 70, right: 70),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: icons,
+                          title: Text(
+                            temp.toString(),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 32,
+                              color: Colors.white,
+                            ),
+                          ),
+                          trailing: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'max : ${maxTemp.toString()}',
+                                  style: TextStyle(
+                                      color: Colors.grey.shade100,
+                                      letterSpacing: 1),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  'min : ${minTemp.toString()}',
+                                  style: TextStyle(
+                                      color: Colors.grey.shade100,
+                                      letterSpacing: 1),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Humidity : ${humidity.toString()}',
+                          style: TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 0.8,
+                              fontSize: 16),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ListTile(
+                    title: Column(
+                      children: [
+                        Text(
+                          description.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            ListTile(
-              title: Column(
-                children: [
-                  Text(
-                    description.toString(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }
