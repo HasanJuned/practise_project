@@ -12,8 +12,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String? temp;
-  String? description = 'r';
-  int? temp2;
+  String? temp3;
+  String? description = 'Mostly Sunny';
+  double? temp2;
+  double? temp4;
   String? location;
   String? humidity;
   int? maxTemp;
@@ -21,65 +23,33 @@ class _HomeScreenState extends State<HomeScreen> {
   bool inProgress = false;
 
   descriptionModel() {
-    if ((temp2 ?? 0) < -20) {
-      description = 'Too much snowing';
-      setState(() {});
+    if ((temp4?.toDouble() ?? 0) <= -20.toDouble()) {
+      return description = 'Too much snowing';
+    } else if ((temp4?.toDouble() ?? 0) <= -15.toDouble()) {
+      return description = 'Snow';
+    } else if ((temp4?.toDouble() ?? 0) <= -10.toDouble()) {
+      return description = 'Too much cool';
+    } else if ((temp4?.toDouble() ?? 0) <= -5.toDouble()) {
+      return description = 'Mostly Cool';
+    } else if ((temp4?.toDouble() ?? 0) <= 0.toDouble()) {
+      return description = 'Cool';
+    } else if ((temp4?.toDouble() ?? 0) <= 5.toDouble()) {
+      return description = 'Rain';
+    } else if ((temp4?.toDouble() ?? 0) <= 10.toDouble()) {
+      return description = 'Weather is cool';
+    } else if ((temp4?.toDouble() ?? 0) <= 15.toDouble()) {
+      return description = 'Sunny and Cool';
+    } else if ((temp4?.toDouble() ?? 0) <= 20.toDouble()) {
+      return description = 'Sunny';
+    } else if ((temp4?.toDouble() ?? 0) <= 25.toDouble()) {
+      return description = 'Mostly Sunny';
+    } else if ((temp4?.toDouble() ?? 0) <= 30.toDouble()) {
+      return description = 'Hot';
+    } else if ((temp4?.toDouble() ?? 0) <= 35.toDouble()) {
+      return description = 'Mostly Hot';
+    } else if ((temp4?.toDouble() ?? 0) <= 40.toDouble()) {
+      return description = 'Too much hot';
     }
-    if ((temp2 ?? 0) < -15  && (temp2 ?? 0) >= -10) {
-      description = 'Snow';
-      setState(() {});
-    }
-    if ((temp2 ?? 0) > -9 && (temp2 ?? 0) <= -5) {
-      description = 'Too much cool';
-      setState(() {});
-    }
-    if ((temp2 ?? 0) > -4 && (temp2 ?? 0) <= 0) {
-      description = 'Mostly Cool';
-      setState(() {});
-    }
-    if ((temp2 ?? 0) > 0 && (temp2 ?? 0) <=5 ) {
-      description = 'Cool';
-      setState(() {});
-    }
-    if ((temp2 ?? 0) > 6  && (temp2 ?? 0) <= 10) {
-      description = 'Cool';
-      setState(() {});
-    }
-    if ((temp2 ?? 0) > 11  && (temp2 ?? 0) <= 15) {
-      description = 'Weather is cool';
-      setState(() {});
-    }
-    if ((temp2 ?? 0) > 16  && (temp2 ?? 0) <= 20) {
-      description = 'Sunny and Cool';
-      setState(() {});
-    }
-    if ((temp2 ?? 0) > 21 && (temp2 ?? 0) <= 25) {
-      description = 'Sunny';
-      setState(() {});
-    }
-    if ((temp2 ?? 0) > 26 && (temp2 ?? 0) <= 30) {
-      description = 'Mostly Sunny';
-      setState(() {});
-    }
-    if ((temp2 ?? 0) > 31 && (temp2 ?? 0) < 35) {
-      description = 'Hot';
-      setState(() {});
-    }
-    if ((temp2 ?? 0) > 36 && (temp2 ?? 0) <= 40) {
-      description = 'Mostly Hot';
-      setState(() {});
-    }
-    if ((temp2 ?? 0) > 40) {
-      description = 'Too much hot';
-      setState(() {});
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getWeather();
-    descriptionModel();
   }
 
   void getWeather() async {
@@ -87,13 +57,16 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
     Response response = await get(
       Uri.parse(
-          'https://api.tomorrow.io/v4/weather/realtime?location=sylhet&apikey=traXCJeobg5nWiW56S2LmwdPz2KR3JfW'),
+          'https://api.tomorrow.io/v4/weather/realtime?location=toronto&apikey=traXCJeobg5nWiW56S2LmwdPz2KR3JfW'),
     );
     print(response.statusCode);
     print(response.body);
     final data = jsonDecode(response.body);
     temp = data['data']['values']['temperature'].toString();
-    temp2 = data['data']['values']['temperature'].toInt();
+    temp3 = data['data']['values']['temperature'].toString();
+    temp2 = double.parse(temp3!).toDouble();
+    temp4 = temp2;
+    print('t $temp4');
 
     /// ami jei api nisi oitar modde, max temp nai. Tai ami temp er shate +10 kore diyesi, karon api te max temp data nei
 
@@ -109,7 +82,15 @@ class _HomeScreenState extends State<HomeScreen> {
     // print(maxTemp.toString());
 
     inProgress = false;
-    setState(() {});
+    setState(() {
+      descriptionModel();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getWeather();
   }
 
   @override
